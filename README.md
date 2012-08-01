@@ -54,7 +54,9 @@ Run Tests
 
     git clone git@github.com:da99/Walt.git
     cd Englishy_Parser
-    mocha
+    
+    npm install mocha
+    ./node_modules/mocha/bin/mocha
 
 Know of a better way?
 -----------------------------
