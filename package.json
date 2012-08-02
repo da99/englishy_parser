@@ -6,6 +6,12 @@
   "scripts": {
     "test": "mocha"
   },
+  "dependencies": {
+    "functools": "*"
+  },
+  "devDependencies": {
+    "sentry": "*"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/da99/Englishy_Parser"
