@@ -7,10 +7,8 @@
     "test": "mocha"
   },
   "dependencies": {
-    "functools": "*"
   },
   "devDependencies": {
-    "sentry": "*"
   },
   "repository": {
     "type": "git",
