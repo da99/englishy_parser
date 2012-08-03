@@ -25,15 +25,15 @@ describe 'Parsing sentences', () ->
   
   it "sentences continued on another line", () ->
     str = """
-          This is a line.
-          This is a 
+          This is line one.
+          This is a
             continued line.
           """
     
     lines = parse_it(str)
     target= [ 
-      [ "This is a line.", null],
-      [ "This is a    continued line.", null]
+      [ "This is line one.", null],
+      [ "This is a   continued line.", null]
     ]
     must_equal lines, target
 
@@ -66,7 +66,7 @@ describe "Parsing blocks", () ->
                        Block
                      
                      """)
-    must_equal lines, [["This is A.", null], ["This is B:", "  Block"] ]
+    must_equal lines, [["This is A.", null], ["This is B:", "  Block\n\n"] ]
   
   it "removes empty lines surrounding block", () ->
     lines = parse_it("""
@@ -77,7 +77,7 @@ describe "Parsing blocks", () ->
         Block line 2.
        
     """)
-    must_equal lines, [["This is A.", null], ["This is B:", "  Block line 1.\n  Block line 2."] ]
+    must_equal lines, [["This is A.", null], ["This is B:", "  Block line 1.\n  Block line 2.\n \n"] ]
   
   it "does not remove last colon if line has no block.", () ->
     lines = parse_it("""

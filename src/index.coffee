@@ -1,6 +1,14 @@
 events = require 'events'
 emitter = new events.EventEmitter()
 
+if !Array.prototype.last
+  Array.prototype.last = (n) ->
+    n = if typeof n != 'undefined' 
+          n
+        else
+          1
+    return this[@.length - n]
+    
 class Englishy
   
   constructor: (str) ->
@@ -14,27 +22,32 @@ class Englishy
     @parse()
 
   record_error: (msg) ->
-    @lines = new Error(msg)
+    err = new Error(msg)
+    err.msg = msg
+      
+    @lines = err
     @error = @lines
     
   last_error: () ->
     @error
 
   last_line: () ->
-    @lines.last and @lines.last[0]
+    last = @lines.last()
+    last and last[0]
 
   last_block: () ->
-    @lines.last and @lines.last[1]
+    last = @lines.last()
+    last and last[1]
 
   append_to_line: (l) ->
-    @lines.last[0] = "#{@last_line()} #{l}"
+    @lines.last()[0] = "#{@last_line()} #{l}"
 
   append_to_block: (l) ->
-    @lines.last[1] << l
+    @lines.last()[1] += l
 
   push_new_line: (l) ->
     pair = if @start_of_block(l)
-             [l, []]
+             [l, ""]
            else
              [l, null]
     @lines.push pair
@@ -44,15 +57,13 @@ class Englishy
     @lines
 
   in_sentence: () ->
-    return false if @last_line()
+    return false if !@last_line()
     return false if @in_block()
-    l = @last_line().strip
-    period_index = l.index(@END_PERIOD) 
-    return true if period_index
-    !( period_index == (l.size - 1) )
+    l = @strip @last_line()
+    !( @END_PERIOD.test(l) )
   
   in_block: () ->
-    !(@last_block())
+    @last_block() != null
 
   start_of_block: (line) ->
     @END_COLON.test @strip(line)
@@ -86,13 +97,16 @@ class Englishy
     return line.length > 1
   
   _process_line: (raw_l) ->
+    line = raw_l
     l = @strip(raw_l)
-    return null if @is_empty(l) and @in_block()
-    begins_with_whitespace = @HEAD_WHITE_SPACE.test(l)
+    
+    return null if @is_empty(l) and @in_block() and @last_block() is ''
+    return null if @is_empty(l) and !@in_block() and !@in_sentence()
+    begins_with_whitespace = @HEAD_WHITE_SPACE.test(line)
     
     if @in_block() and (begins_with_whitespace or @is_empty(l))
-      @append_to_block l
-      return l
+      @append_to_block( line + "\n" )
+      return line
     
     if !@in_sentence() and ( @start_of_block(l) or @full_sentence(l) )
       @push_new_line l
@@ -102,22 +116,26 @@ class Englishy
     if @in_sentence()
 
       # Error check: Start of block not allowed after incomplete sentence.
-      if @start_of_block?(l)
+      if @start_of_block(l)
         return @record_error("Incomplete sentence before block: #{@last_line()}")
-        
 
       return @append_to_line(line)
-      
 
+    
     if !@in_block() and !@full_sentence(l)
       return @push_new_line( line )
 
-    @record_error("Unknown fragment: #{line}")
+    @unknown_fragment line
+
+  unknown_fragment: (l) ->
+    @record_error "Unknown fragment: #{l}"
 
   parse: () ->
     
     raw_lines = @remove_indentation(@string).split("\n")
     @_process_line(raw_lines.shift()) while (@error is null) and raw_lines.length > 0
+    if @lines.last && @in_sentence()
+      @unknown_fragment @last_line()
     @lines
 
 exports.Englishy = Englishy
