@@ -45,8 +45,9 @@ Usage
 ------
 
     var ep = require("Englishy_Parser");
-    
-    ep.parse(my_str)
+    var parsed = new ep.Englishy(str);
+    parsed.lines; 
+    // => [ ... ]
 
 
 Run Tests
@@ -55,8 +56,12 @@ Run Tests
     git clone git@github.com:da99/Walt.git
     cd Englishy_Parser
     
-    npm install mocha
-    ./node_modules/mocha/bin/mocha
+    sudo npm link
+    npm link Englishy_Parser
+    npm install
+
+    sudo npm install -g mocha
+    mocha  --watch --compilers coffee:coffee-script 
 
 Know of a better way?
 -----------------------------
