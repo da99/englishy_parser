@@ -1,5 +1,5 @@
 {
-  "name": "Englishy_Parser",
+  "name": "englishy_parser",
   "version": "0.1.0",
   "description": "A naive approach to parsing Englishy text.",
   "main": "lib/index.js",
