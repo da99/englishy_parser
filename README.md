@@ -19,20 +19,6 @@ A npm module providing simple line and blockquote parsing (w/o paragraphs):
       [ "This is a line with a block", "  I am a block.\n  I am also part of a block."]
     ]
 
-The following raises `Englishy\_Parser::Error`:
-
-          Bad indentation.
-          
-    # -----------------------
-    
-    Multi-line with an
-      
-      an empty line in between.
-
-    # -----------------------
-    
-    A block without:
-      surrounding blank lines.
       
 
 
