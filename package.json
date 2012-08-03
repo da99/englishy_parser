@@ -2,7 +2,7 @@
   "name": "Englishy_Parser",
   "version": "0.1.0",
   "description": "A naive approach to parsing Englishy text.",
-  "main": "lib/Englishy_Parser",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha"
   },
