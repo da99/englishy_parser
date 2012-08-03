@@ -39,12 +39,12 @@ The following raises `Englishy\_Parser::Error`:
 Installation
 ------------
 
-    npm install Englishy_Parser
+    npm install englishy_parser
 
 Usage
 ------
 
-    var ep = require("Englishy_Parser");
+    var ep = require("englishy_parser");
     var parsed = new ep.Englishy(str);
     parsed.lines; 
     // => [ ... ]
@@ -53,11 +53,11 @@ Usage
 Run Tests
 ---------
 
-    git clone git@github.com:da99/Walt.git
-    cd Englishy_Parser
+    git clone git@github.com:da99/englishy_parser.git
+    cd englishy_parser
     
     sudo npm link
-    npm link Englishy_Parser
+    npm link englishy_parser
     npm install
 
     sudo npm install -g mocha

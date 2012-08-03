@@ -1,5 +1,5 @@
 assert = require 'assert'
-ep     = require 'Englishy_Parser'
+ep     = require 'englishy_parser'
 
 parse_it = (str) ->
   return (new ep.Englishy(str)).lines
