@@ -1,3 +1,6 @@
+Obsolete:
+================
+This project has been replaced by: [english](https://github.com/da99/englishy)
 
 Englishy_Parser
 ================
